@@ -10,6 +10,7 @@ public class Enemy_Skeleton : Enemy
         moveState = new Enemy_MoveState(this, stateMachine, "Move");
         attackState = new Enemy_AttackState(this, stateMachine, "Attack");
         battleState = new Enemy_BattleState(this, stateMachine, "Battle");
+        deadState = new Enemy_DeadState(this, stateMachine, "Idle"); // No Parameter Used as not applying animation!
     }
 
     protected override void Start()
