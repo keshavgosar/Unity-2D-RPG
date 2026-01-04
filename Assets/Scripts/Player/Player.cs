@@ -18,6 +18,7 @@ public class Player : Entity
     public Player_BasicAttackState basicAttackState { get; private set; }
     public Player_JumpAttackState jumpAttackState { get; private set; }
     public Player_DeadState deadState { get; private set; }
+    public Player_CounterAttackState counterAttackState { get; private set; }
 
     [Header("Attack Details")]
     public Vector2[] attackVelocity;
@@ -57,6 +58,7 @@ public class Player : Entity
         basicAttackState = new Player_BasicAttackState(this, stateMachine, "BasicAttack");
         jumpAttackState = new Player_JumpAttackState(this, stateMachine, "JumpAttack");
         deadState = new Player_DeadState(this, stateMachine, "Dead");
+        counterAttackState = new Player_CounterAttackState(this, stateMachine, "CounterAttack");
     }
 
     protected override void Start()
