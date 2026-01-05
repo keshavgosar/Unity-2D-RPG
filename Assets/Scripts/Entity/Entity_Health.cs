@@ -31,7 +31,7 @@ public class Entity_Health : MonoBehaviour, IDamagable
         UpdateHealthBar();
     }
 
-    public virtual bool TakeDamage(float damage, Transform damageDealer)
+    public virtual bool TakeDamage(float damage,float elementalDamage, Transform damageDealer)
     {
         if (isDead)
             return false;
@@ -42,8 +42,14 @@ public class Entity_Health : MonoBehaviour, IDamagable
             return false;
         }
 
-        Vector2 knockback = CalculateKnockback(damage, damageDealer);
-        float duration = CalculateDuration(damage);
+        Entity_Stats attackerStats = damageDealer.GetComponent<Entity_Stats>();
+        float armorReduction = attackerStats != null ? attackerStats.GetArmorReduction() : 0;
+
+        float mitigation = stats.GetArmorMitigation(armorReduction);
+        float finalDamage = damage * (1 - mitigation);
+
+        Vector2 knockback = CalculateKnockback(finalDamage, damageDealer);
+        float duration = CalculateDuration(finalDamage);
 
         if(entity)
         {
@@ -55,7 +61,8 @@ public class Entity_Health : MonoBehaviour, IDamagable
             entityVfx.PlayOnDamageVfx();
         }
 
-        ReduceHp(damage);
+        ReduceHp(finalDamage);
+        Debug.Log("Elemental Damage: " + elementalDamage);
 
         return true;
     }

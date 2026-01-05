@@ -7,12 +7,76 @@ public class Entity_Stats : MonoBehaviour
     public Stat_OffenseGroup offense;
     public Stat_DefenceGroup defence;
 
-    public float GetMaxHealth()
+    public float GetElementalDamage()
     {
-        float baseHp = maxHealth.GetValue();
-        float bonusHp = major.vitality.GetValue() * 5;
+        float fireDamage = offense.fireDamage.GetValue();
+        float iceDamage = offense.iceDamage.GetValue();
+        float lightningDamage = offense.lightningDamage.GetValue();
+        float bonusElementalDamage = major.intelligence.GetValue(); // Bonus elemental damage from Intelligence +1 per INT
 
-        return baseHp + bonusHp;
+        float highestDamage = fireDamage;
+
+        if (highestDamage < iceDamage)
+            highestDamage = iceDamage;
+
+        if (lightningDamage > highestDamage)
+            lightningDamage = highestDamage;
+
+        if (highestDamage <= 0)
+            return 0;
+
+        float bonusFire = (fireDamage == highestDamage) ? 0 : fireDamage * 0.5f;
+        float bonusIce = (iceDamage == highestDamage) ? 0 : iceDamage * 0.5f;
+        float bonusLightning = (lightningDamage == highestDamage) ? 0 : lightningDamage * 0.5f;
+
+        float weakerElementsDamage = bonusFire + bonusIce + bonusLightning;
+        float finalDamage = highestDamage + weakerElementsDamage + bonusElementalDamage;  
+
+        return finalDamage;
+    }
+
+    public float GetPhysicalDamage(out bool isCrit)
+    {
+        float baseDamage = offense.damage.GetValue();
+        float bonusDamage = major.strength.GetValue();
+        float totalBaseDamage = baseDamage + bonusDamage;
+
+        float baseCritChance = offense.critChance.GetValue();
+        float bonusCritChance = major.agility.GetValue() * 0.3f; // Bonus crit chance from Agility: +0.3% per AGI
+        float critChance = baseCritChance + bonusCritChance;
+
+        float baseCritPower = offense.critPower.GetValue();
+        float bonusCritPower = major.strength.GetValue() * 0.5f; // Bonus crit chance from strngth +0.5% per STR
+        float critPower = (baseCritPower + bonusCritPower) / 100; // Toral crit power multiplier (eg. 150/100 = 1.5f)
+
+        isCrit = Random.Range(0, 100) < critChance;
+        float finalDamage = isCrit ? totalBaseDamage * critPower : totalBaseDamage;
+
+        return finalDamage;
+    }
+
+    public float GetArmorMitigation(float armorReduction)
+    {
+        float baseArmor = defence.armor.GetValue();
+        float bonusArmor = major.vitality.GetValue(); // Bonus armor from vitality: +1 per VIT
+        float totalArmor = baseArmor + bonusArmor;
+
+        float reductionMultiplier = Mathf.Clamp(1 - armorReduction, 0, 1);
+        float effectiveArmor = totalArmor * reductionMultiplier;
+
+        float mitigation = effectiveArmor / (effectiveArmor + 100); // Mitigation formula;
+        float mitigationCap = 0.85f; // Max mitigation will be capped to 85%;
+
+        float finalMitigation = Mathf.Clamp(mitigation, 0, mitigationCap);
+
+        return finalMitigation;
+    }
+
+    public float GetArmorReduction()
+    {
+        // Total armor reduction as multiplier (e.g 30 / 100 = 0.3f)
+        float finalReduction = offense.armorReduction.GetValue() / 100;
+        return finalReduction;
     }
 
     public float GetEvasion()
@@ -26,5 +90,13 @@ public class Entity_Stats : MonoBehaviour
         float finalEvasion = Mathf.Clamp(totalEvasion, 0 ,evasionCap);
 
         return finalEvasion;
+    }
+    public float GetMaxHealth()
+    {
+        float baseMaxHealth = maxHealth.GetValue();
+        float bonusMaxHealth = major.vitality.GetValue() * 5;
+
+        float finalMaxHealth = baseMaxHealth + bonusMaxHealth;
+        return finalMaxHealth;
     }
 }
