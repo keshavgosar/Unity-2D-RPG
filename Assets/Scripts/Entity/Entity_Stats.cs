@@ -7,7 +7,7 @@ public class Entity_Stats : MonoBehaviour
     public Stat_OffenseGroup offense;
     public Stat_DefenceGroup defence;
 
-    public float GetElementalDamage()
+    public float GetElementalDamage(out ElementType element, float scaleFactor = 1f)
     {
         float fireDamage = offense.fireDamage.GetValue();
         float iceDamage = offense.iceDamage.GetValue();
@@ -15,30 +15,65 @@ public class Entity_Stats : MonoBehaviour
         float bonusElementalDamage = major.intelligence.GetValue(); // Bonus elemental damage from Intelligence +1 per INT
 
         float highestDamage = fireDamage;
+        element = ElementType.Fire;
 
         if (highestDamage < iceDamage)
+        {
             highestDamage = iceDamage;
+            element = ElementType.Ice;
+        }
 
-        if (lightningDamage > highestDamage)
-            lightningDamage = highestDamage;
+        if (highestDamage < lightningDamage)
+        {
+            highestDamage = lightningDamage;
+            element = ElementType.Lightning;
+        }
 
         if (highestDamage <= 0)
+        {
+            element = ElementType.None;
             return 0;
+        }
 
         float bonusFire = (fireDamage == highestDamage) ? 0 : fireDamage * 0.5f;
         float bonusIce = (iceDamage == highestDamage) ? 0 : iceDamage * 0.5f;
         float bonusLightning = (lightningDamage == highestDamage) ? 0 : lightningDamage * 0.5f;
 
         float weakerElementsDamage = bonusFire + bonusIce + bonusLightning;
-        float finalDamage = highestDamage + weakerElementsDamage + bonusElementalDamage;  
+        float finalDamage = highestDamage + weakerElementsDamage + bonusElementalDamage;
 
-        return finalDamage;
+        return finalDamage * scaleFactor;
     }
 
-    public float GetPhysicalDamage(out bool isCrit)
+    public float GetElementalResistance(ElementType element)
+    {
+        float baseResistance = 0;
+        float bonusResistance = major.intelligence.GetValue() * 0.5f; // Bonus resistance from intelligence +0.5% per INT;
+
+        switch (element)
+        {
+            case ElementType.Fire:
+                baseResistance = defence.fireRes.GetValue();
+                break;
+            case ElementType.Ice:
+                baseResistance = defence.iceRes.GetValue();
+                break;
+            case ElementType.Lightning:
+                baseResistance = defence.lightningRes.GetValue();
+                break;
+        }
+
+        float resistance = baseResistance + bonusResistance;
+        float resistanceCap = 75f; //Resistance will capped to 75%
+        float finalResistance = Mathf.Clamp(resistance, 0, resistanceCap) / 100; // convert the value to 0 to 1 multiplier;
+        
+        return finalResistance;
+    }
+
+    public float GetPhysicalDamage(out bool isCrit, float scaleFactor = 1f)
     {
         float baseDamage = offense.damage.GetValue();
-        float bonusDamage = major.strength.GetValue();
+        float bonusDamage = major.strength.GetValue(); // bonus damage from strength +1 per STR
         float totalBaseDamage = baseDamage + bonusDamage;
 
         float baseCritChance = offense.critChance.GetValue();
@@ -52,7 +87,7 @@ public class Entity_Stats : MonoBehaviour
         isCrit = Random.Range(0, 100) < critChance;
         float finalDamage = isCrit ? totalBaseDamage * critPower : totalBaseDamage;
 
-        return finalDamage;
+        return finalDamage * scaleFactor;
     }
 
     public float GetArmorMitigation(float armorReduction)
@@ -87,7 +122,7 @@ public class Entity_Stats : MonoBehaviour
         float totalEvasion = baseEvasion + bonusEvasion;
         float evasionCap = 85f; // Evasion will be capped at 85%
 
-        float finalEvasion = Mathf.Clamp(totalEvasion, 0 ,evasionCap);
+        float finalEvasion = Mathf.Clamp(totalEvasion, 0, evasionCap);
 
         return finalEvasion;
     }

@@ -31,12 +31,12 @@ public class Entity_Health : MonoBehaviour, IDamagable
         UpdateHealthBar();
     }
 
-    public virtual bool TakeDamage(float damage,float elementalDamage, Transform damageDealer)
+    public virtual bool TakeDamage(float damage,float elementalDamage, ElementType element, Transform damageDealer)
     {
         if (isDead)
             return false;
 
-        if(AttackEvaded())
+        if (AttackEvaded())
         {
             Debug.Log($"{gameObject.name} evaded the attack!");
             return false;
@@ -45,26 +45,29 @@ public class Entity_Health : MonoBehaviour, IDamagable
         Entity_Stats attackerStats = damageDealer.GetComponent<Entity_Stats>();
         float armorReduction = attackerStats != null ? attackerStats.GetArmorReduction() : 0;
 
+        // Physical Damage Calculation
         float mitigation = stats.GetArmorMitigation(armorReduction);
-        float finalDamage = damage * (1 - mitigation);
+        float physicalDamageTaken = damage * (1 - mitigation);
 
+        //Elemental damage caluclation
+        float resistance = stats.GetElementalResistance(element);
+        float elementalDamageTaken = elementalDamage * (1 - resistance);
+
+        TakeKnockback(damageDealer, physicalDamageTaken);
+        ReduceHp(physicalDamageTaken + elementalDamageTaken);
+
+        return true;
+    }
+
+    private void TakeKnockback(Transform damageDealer, float finalDamage)
+    {
         Vector2 knockback = CalculateKnockback(finalDamage, damageDealer);
         float duration = CalculateDuration(finalDamage);
 
-        if(entity)
+        if (entity)
         {
             entity.ReciveKnockback(knockback, duration);
         }
-        
-        if(entityVfx)
-        {
-            entityVfx.PlayOnDamageVfx();
-        }
-
-        ReduceHp(finalDamage);
-        Debug.Log("Elemental Damage: " + elementalDamage);
-
-        return true;
     }
 
     private bool AttackEvaded()
@@ -72,8 +75,13 @@ public class Entity_Health : MonoBehaviour, IDamagable
         return Random.Range(0, 100) < stats.GetEvasion();
     }
 
-    protected void ReduceHp(float damage)
+    public void ReduceHp(float damage)
     {
+        if (entityVfx)
+        {
+            entityVfx.PlayOnDamageVfx();
+        }
+
         currentHP -= damage;
         UpdateHealthBar();
 

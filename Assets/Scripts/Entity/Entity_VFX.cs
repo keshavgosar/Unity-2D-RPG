@@ -17,11 +17,59 @@ public class Entity_VFX : MonoBehaviour
     [SerializeField] private GameObject hitVfx;
     [SerializeField] private GameObject critHitVfx;
 
+    [Header("Element colors")]
+    [SerializeField] private Color chillVfx = Color.cyan;
+    [SerializeField] private Color burnVfx = Color.red;
+    [SerializeField] private Color electrifyVfx = Color.yellow;
+    private Color originalHitVfxColor;
+
     private void Awake()
     {
         entity = GetComponent<Entity>();
         sr = GetComponentInChildren<SpriteRenderer>();
         originalMaterial = sr.material;
+        originalHitVfxColor = hitVfxColor;
+    }
+
+    public void PlayOnStatusVfx(float duration, ElementType element)
+    {
+        if (element == ElementType.Ice)
+            StartCoroutine(PlayStatusVfxCo(duration, chillVfx));
+
+        if (element == ElementType.Fire)
+            StartCoroutine(PlayStatusVfxCo(duration, burnVfx));
+
+        if (element == ElementType.Lightning)
+            StartCoroutine(PlayStatusVfxCo(duration, electrifyVfx));
+    }
+
+    public void StopAllVfx()
+    {
+        StopAllCoroutines();
+        sr.color = Color.white;
+        sr.material = originalMaterial;
+    }
+
+    private IEnumerator PlayStatusVfxCo(float duration, Color effectColor)
+    {
+        float tickInterval = 0.25f;
+        float timeHasPassed = 0;
+
+        Color lightColor = effectColor * 1.2f;
+        Color darkColor = effectColor * 0.8f;
+
+        bool toggle = false;
+
+        while (timeHasPassed < duration)
+        {
+            sr.color = toggle ? lightColor : darkColor;
+            toggle = !toggle;
+
+            yield return new WaitForSeconds(tickInterval);
+            timeHasPassed += tickInterval;
+        }
+
+        sr.color = Color.white;
     }
 
     public void CreateOnHitVFX(Transform target, bool isCrit)
@@ -36,6 +84,15 @@ public class Entity_VFX : MonoBehaviour
         {
             vfx.transform.Rotate(0, 180, 0);
         }
+    }
+
+    public void UpdateOnHitColor(ElementType element)
+    {
+        if (element == ElementType.Ice)
+            hitVfxColor = chillVfx;
+
+        if (element == ElementType.None)
+            hitVfxColor = originalHitVfxColor;
     }
 
     public void PlayOnDamageVfx()
