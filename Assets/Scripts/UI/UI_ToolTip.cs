@@ -6,7 +6,7 @@ public class UI_ToolTip : MonoBehaviour
     private RectTransform rect;
     [SerializeField] private Vector2 offset = new Vector2(300, 20);
 
-    private void Awake()
+    protected virtual void Awake()
     {
         rect = GetComponent<RectTransform>();
     }
@@ -41,6 +41,11 @@ public class UI_ToolTip : MonoBehaviour
             targetPosition.y = screenBottom + verticalHalf + offset.y;
 
 
-            rect.position = targetPosition;
+        rect.position = targetPosition;
+    }
+
+    protected string GetColoredText(string color, string text)
+    {
+        return $"<color={color}>{text}</color>";
     }
 }
