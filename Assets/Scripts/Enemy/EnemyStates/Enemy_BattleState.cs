@@ -4,6 +4,7 @@ public class Enemy_BattleState : EnemyState
 {
 
     private Transform player;
+    private Transform lastTarget;
     private float lastTImeWasInBattle;
     public Enemy_BattleState(Enemy enemy, StateMachine stateMachine, string animBoolName) : base(enemy, stateMachine, animBoolName)
     {
@@ -33,6 +34,7 @@ public class Enemy_BattleState : EnemyState
 
         if (enemy.IsPlayerDetected() == true)
         {
+            UpdateTargetIfNeeded();
             UpdateBattleTimer();
         }
 
@@ -48,6 +50,20 @@ public class Enemy_BattleState : EnemyState
         else
         {
             enemy.SetVelocity(enemy.battleMoveSpeed * DirectionToPlayer(), rb.linearVelocity.y);
+        }
+    }
+
+    private void UpdateTargetIfNeeded()
+    {
+        if (enemy.IsPlayerDetected() == false)
+            return;
+
+        Transform newTarget = enemy.IsPlayerDetected().transform;
+
+        if(newTarget != lastTarget)
+        {
+            lastTarget = newTarget;
+            player = newTarget;
         }
     }
 

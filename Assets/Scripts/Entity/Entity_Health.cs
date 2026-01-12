@@ -31,9 +31,16 @@ public class Entity_Health : MonoBehaviour, IDamagable
         entityStats = GetComponent<Entity_Stats>();
         healthBar = GetComponentInChildren<Slider>();
 
+        SetupHealth();
+    }
+
+    private void SetupHealth()
+    {
+        if (entityStats == null)
+            return;
+
         currentHealth = entityStats.GetMaxHealth();
         UpdateHealthBar();
-
         InvokeRepeating(nameof(RegenerateHealth), 0, regenInterval);
     }
 
@@ -52,11 +59,11 @@ public class Entity_Health : MonoBehaviour, IDamagable
         float armorReduction = attackerStats != null ? attackerStats.GetArmorReduction() : 0;
 
         // Physical Damage Calculation
-        float mitigation = entityStats.GetArmorMitigation(armorReduction);
+        float mitigation = entityStats != null ? entityStats.GetArmorMitigation(armorReduction) : 0;
         float physicalDamageTaken = damage * (1 - mitigation);
 
         //Elemental damage caluclation
-        float resistance = entityStats.GetElementalResistance(element);
+        float resistance = entityStats != null ? entityStats.GetElementalResistance(element) : 0;
         float elementalDamageTaken = elementalDamage * (1 - resistance);
 
         TakeKnockback(damageDealer, physicalDamageTaken);
@@ -67,6 +74,9 @@ public class Entity_Health : MonoBehaviour, IDamagable
 
     private bool AttackEvaded()
     {
+        if (entityStats == null)
+            return false;
+
         return Random.Range(0, 100) < entityStats.GetEvasion();
     }
 
@@ -105,7 +115,7 @@ public class Entity_Health : MonoBehaviour, IDamagable
             Die();
     }
 
-    private void Die()
+    protected virtual void Die()
     {
         isDead = true;
         entity.EntityDeath();
@@ -153,5 +163,11 @@ public class Entity_Health : MonoBehaviour, IDamagable
 
     private float CalculateDuration(float damage) => IsHeavyDamage(damage) ? heavyKnockbackDuration : knockbackDuration;
 
-    private bool IsHeavyDamage(float damage) => damage / entityStats.GetMaxHealth() > heavyDamageThreshold;
+    private bool IsHeavyDamage(float damage)
+    {
+        if (entityStats == null)
+            return false;
+        else
+            return damage / entityStats.GetMaxHealth() > heavyDamageThreshold;
+    }
 }
