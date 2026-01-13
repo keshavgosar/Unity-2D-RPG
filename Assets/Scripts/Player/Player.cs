@@ -12,6 +12,7 @@ public class Player : Entity
     public Player_VFX vfx { get; private set; }
     public Entity_Health health { get; private set; }
     public Entity_StatusHandler statusHandler { get; private set; }
+    public Player_DomainExpansionState domainExpansionState { get; private set; }
 
     #region State Variables
     public Player_IdleState idleState { get; private set; }
@@ -35,6 +36,10 @@ public class Player : Entity
     public float attackVelocityDuration = 0.1f;
     public float comboResetTime = 1;
     private Coroutine queuedAttackCo;
+
+    [Header("Ultimate ability details")]
+    public float riseSpeed = 25;
+    public float riseMaxDistance = 3;
 
 
     [Header("Movement Details")]
@@ -76,6 +81,7 @@ public class Player : Entity
         deadState = new Player_DeadState(this, stateMachine, "Dead");
         counterAttackState = new Player_CounterAttackState(this, stateMachine, "CounterAttack");
         swordThrowState = new Player_SwordThrowState(this, stateMachine, "SwordThrow");
+        domainExpansionState = new Player_DomainExpansionState(this, stateMachine, "JumpFall");
     }
 
     protected override void Start()

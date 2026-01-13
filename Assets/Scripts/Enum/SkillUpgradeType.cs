@@ -28,10 +28,15 @@ public enum SkillUpgradeType
     TimeEcho,                 // Create a clone of a player. It can take damage from enemies.
     TimeEcho_SingleAttack,    // Time Echo can perform a single attack
     TimeEcho_MultiAttack,     // Time Echo can perform N attacks.
-    TimeEcho_ChaceToMultiply, // Time Echo has a chance to create another time echo when attacks
+    TimeEcho_ChanceToDuplicate, // Time Echo has a chance to create another time echo when attacks
 
     TimeEcho_HealWisp,        // When Time echo dies it creates a wips that flies towards the player to heal it.
                               // Heal is - to percantage of damage taken when died
     TimeEcho_CleanseWisp,     // Wisp will now remove negative effects from player
-    TimeEcho_CooldownWisp     // Wisp will reduce cooldown of all skills by N seconds.
+    TimeEcho_CooldownWisp,    // Wisp will reduce cooldown of all skills by N seconds.
+
+    // ------- Domain Expansion ------
+    Domain_SlowingDown, // Create an area in wich you slow down enemies by 90-100%. You can freely move and fight.
+    Domain_EchoSpam,    // You can no longer move, but you spam enemy with Time Echo ability
+    Domain_ShardSpam    // You can no longer move, but you spam enemy with Time Shard ability
 }
