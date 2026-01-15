@@ -3,35 +3,40 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler
+public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler, IPointerEnterHandler, IPointerExitHandler
 {
     public Inventory_Item itemInSlot { get; private set; }
-    private Inventory_Player inventory;
+    protected Inventory_Player inventory;
+    protected UI ui;
+    protected RectTransform rect;
 
     [Header("UI Slot Setup")]
     [SerializeField] private Image itemIcon;
     [SerializeField] private TextMeshProUGUI itemStackSize;
 
-    private void Awake()
+    protected void Awake()
     {
+        ui = GetComponentInParent<UI>();
+        rect = GetComponent<RectTransform>();
         inventory = FindAnyObjectByType<Inventory_Player>();
 
     }
-    public void OnPointerDown(PointerEventData eventData)
+    public virtual void OnPointerDown(PointerEventData eventData)
     {
-        if (itemInSlot == null)
+        if (itemInSlot == null || itemInSlot.itemData.itemType == ItemType.Material)
             return;
 
         inventory.TryEquipItem(itemInSlot);
 
-        Debug.Log("The item is clicked!!!");
+        if (itemInSlot == null)
+            ui.itemToolTip.ShowToolTip(false, null);
     }
 
     public void UpdateSlot(Inventory_Item item)
     {
         itemInSlot = item;
 
-        if(itemInSlot == null)
+        if (itemInSlot == null)
         {
             itemStackSize.text = "";
             itemIcon.color = Color.clear;
@@ -44,5 +49,15 @@ public class UI_ItemSlot : MonoBehaviour, IPointerDownHandler
         itemStackSize.text = item.stackSize > 1 ? item.stackSize.ToString() : "";
     }
 
-    
+    public void OnPointerEnter(PointerEventData eventData)
+    {
+        if (itemInSlot == null) return;
+
+        ui.itemToolTip.ShowToolTip(true, rect, itemInSlot);
+    }
+
+    public void OnPointerExit(PointerEventData eventData)
+    {
+        ui.itemToolTip.ShowToolTip(false, null);
+    }
 }
