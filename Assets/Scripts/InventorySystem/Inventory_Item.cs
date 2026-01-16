@@ -10,10 +10,14 @@ public class Inventory_Item
     public int stackSize = 1;
 
     public ItemModifier[] modifiers { get; private set; }
+    public ItemEffect_DataSO itemEffect;
+
+
     public Inventory_Item(ItemDataSO itemData)
     {
         this.itemData = itemData;
 
+        itemEffect = itemData.itemEffect;
         modifiers = EquipmentData()?.modifiers;
 
         itemId = itemData.itemName + " - " + Guid.NewGuid();
@@ -36,6 +40,8 @@ public class Inventory_Item
             statToModify.RemoveModifier(itemId);
         }
     }
+    public void AddItemEffect(Player player) => itemEffect?.Subscribe(player);
+    public void RemoveItemEffect() => itemEffect?.Unsubscribe();
 
     private EquipmentDataSO EquipmentData()
     {

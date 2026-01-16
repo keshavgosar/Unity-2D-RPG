@@ -22,6 +22,9 @@ public class UI_ItemToolTip : UI_ToolTip
         if (item.itemData.itemType == ItemType.Material)
             return "used for crafting.";
 
+        if(item.itemData.itemType == ItemType.Consumable)
+            return item.itemData.itemEffect.effectDescription;
+
         StringBuilder sb = new StringBuilder();
 
         sb.AppendLine("");
@@ -33,6 +36,13 @@ public class UI_ItemToolTip : UI_ToolTip
             sb.Append("+ " + modValue + " " + modType);
             sb.AppendLine("");
 
+        }
+
+        if(item.itemEffect != null)
+        {
+            sb.AppendLine("");
+            sb.AppendLine("Unique Effect:");
+            sb.AppendLine(item.itemEffect.effectDescription);
         }
 
         return sb.ToString();
