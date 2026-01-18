@@ -4,8 +4,85 @@ using UnityEngine;
 
 public class Inventory_Storage : Inventory_Base
 {
-    private Inventory_Player playerInventory;
+    public Inventory_Player playerInventory { get; private set; }
     public List<Inventory_Item> materialStash;
+
+
+    public void ConsumeMaterials(Inventory_Item itemToCraft)
+    {
+        foreach (var requiredItem in itemToCraft.itemData.craftRecipe)
+        {
+            int amountToConsume = requiredItem.stackSize;
+
+            amountToConsume = amountToConsume - ConsumedMaterialAmount(playerInventory.itemList, requiredItem);
+
+            if(amountToConsume > 0)
+                amountToConsume = amountToConsume - ConsumedMaterialAmount(itemList, requiredItem);
+
+            if(amountToConsume > 0)
+                amountToConsume = amountToConsume - ConsumedMaterialAmount(materialStash, requiredItem);
+        }
+    }
+
+    private int ConsumedMaterialAmount(List<Inventory_Item> itemList, Inventory_Item neededItem)
+    {
+        int amountNeeded = neededItem.stackSize;
+        int consumedAmount = 0;
+
+        foreach (var item in itemList)
+        {
+            if (item.itemData != neededItem.itemData)
+                continue;
+
+            int removeAmount = Mathf.Min(item.stackSize, amountNeeded - consumedAmount);
+            item.stackSize = item.stackSize - removeAmount;
+            consumedAmount = consumedAmount + removeAmount;
+
+            if(item.stackSize <= 0)
+                itemList.Remove(item);
+
+            if (consumedAmount >= amountNeeded)
+                break;
+        }
+
+        return consumedAmount;
+    }
+
+    public bool HasEnoughMaterials(Inventory_Item itemToCraft)
+    {
+        foreach (var requiredMaterial in itemToCraft.itemData.craftRecipe)
+        {
+            if (GetAvailableAmountOf(requiredMaterial.itemData) < requiredMaterial.stackSize)
+                return false;
+        }
+
+        return true;
+    }
+
+    public int GetAvailableAmountOf(ItemDataSO requiredItem)
+    {
+        int amount = 0;
+
+        foreach (var item in playerInventory.itemList)
+        {
+            if (item.itemData == requiredItem)
+                amount = amount + item.stackSize;
+        }
+
+        foreach (var item in itemList)
+        {
+            if(item.itemData == requiredItem)
+                amount = amount + item.stackSize;
+        }
+
+        foreach (var item in materialStash)
+        {
+            if(item.itemData == requiredItem)
+                amount = amount + item.stackSize;
+        }
+
+        return amount;
+    }
 
     public void AddMaterialToStash(Inventory_Item itemToAdd)
     {
