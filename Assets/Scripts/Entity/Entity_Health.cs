@@ -5,11 +5,13 @@ using UnityEngine.UI;
 public class Entity_Health : MonoBehaviour, IDamagable
 {
     public event Action OnTakingDamage;
+    public event Action OnHealthUpdate;
 
     private Slider healthBar;
     private Entity entity;
     private Entity_VFX entityVfx;
     private Entity_Stats entityStats;
+    private Entity_DropManager dropManager;
 
     [SerializeField] protected float currentHealth;
     public bool isDead {  get; private set; }
@@ -35,6 +37,7 @@ public class Entity_Health : MonoBehaviour, IDamagable
         entityVfx = GetComponent<Entity_VFX>();
         entityStats = GetComponent<Entity_Stats>();
         healthBar = GetComponentInChildren<Slider>();
+        dropManager = GetComponent<Entity_DropManager>();
 
         SetupHealth();
     }
@@ -45,6 +48,8 @@ public class Entity_Health : MonoBehaviour, IDamagable
             return;
 
         currentHealth = entityStats.GetMaxHealth();
+        OnHealthUpdate += UpdateHealthBar;
+
         UpdateHealthBar();
         InvokeRepeating(nameof(RegenerateHealth), 0, regenInterval);
     }
@@ -109,18 +114,20 @@ public class Entity_Health : MonoBehaviour, IDamagable
         float maxHealth = entityStats.GetMaxHealth();
 
         currentHealth = Mathf.Min(newHealth, maxHealth);
-        UpdateHealthBar();
+        OnHealthUpdate?.Invoke();
     }
 
     public void ReduceHealth(float damage)
     {
+
+        currentHealth -= damage;
+
         if (entityVfx)
         {
             entityVfx.PlayOnDamageVfx();
         }
-
-        currentHealth -= damage;
-        UpdateHealthBar();
+        
+        OnHealthUpdate?.Invoke();
 
         if (currentHealth < 0) 
             Die();
@@ -130,6 +137,7 @@ public class Entity_Health : MonoBehaviour, IDamagable
     {
         isDead = true;
         entity.EntityDeath();
+        dropManager?.DropItems();
     }
 
     public float GetHealthPercent() => currentHealth / entityStats.GetMaxHealth();
@@ -137,8 +145,10 @@ public class Entity_Health : MonoBehaviour, IDamagable
     public void SetHealthToPercent(float percent)
     {
         currentHealth = entityStats.GetMaxHealth() * Mathf.Clamp(percent, 0, 1);
-        UpdateHealthBar();
+        OnHealthUpdate?.Invoke();
     }
+
+    public float GetCurrentHealth() => currentHealth;
 
     private void UpdateHealthBar()
     {

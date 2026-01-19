@@ -64,13 +64,26 @@ public class Inventory_Item
 
     public string GetItemInfo()
     {
+        StringBuilder sb = new StringBuilder();
+
         if (itemData.itemType == ItemType.Material)
-            return "used for crafting.";
+        {
+            sb.AppendLine("");
+            sb.AppendLine("Use for crafting");
+            sb.AppendLine("");
+            sb.AppendLine("");
+            return sb.ToString();
+        }
 
         if (itemData.itemType == ItemType.Consumable)
-            return itemData.itemEffect.effectDescription;
+        {
+            sb.AppendLine("");
+            sb.AppendLine(itemEffect.effectDescription);
+            sb.AppendLine("");
+            sb.AppendLine("");
+            return sb.ToString();
+        }
 
-        StringBuilder sb = new StringBuilder();
 
         sb.AppendLine("");
 
@@ -78,8 +91,8 @@ public class Inventory_Item
         {
             string modType = GetStatNameByType(mod.statType);
             string modValue = IsPercentageStat(mod.statType) ? mod.value.ToString() + "%" : mod.value.ToString();
-            sb.Append("+ " + modValue + " " + modType);
-            sb.AppendLine("");
+            sb.AppendLine("+ " + modValue + " " + modType);
+            //sb.AppendLine("");
 
         }
 
@@ -89,6 +102,9 @@ public class Inventory_Item
             sb.AppendLine("Unique Effect:");
             sb.AppendLine(itemEffect.effectDescription);
         }
+
+        sb.AppendLine("");
+        sb.AppendLine("");
 
         return sb.ToString();
     }
