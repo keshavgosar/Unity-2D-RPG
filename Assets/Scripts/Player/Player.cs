@@ -13,7 +13,8 @@ public class Player : Entity
     public Entity_Health health { get; private set; }
     public Entity_StatusHandler statusHandler { get; private set; }
     public Player_Combat combat { get; private set; }
-    public Player_DomainExpansionState domainExpansionState { get; private set; }
+    public Inventory_Player inventory { get; private set; }
+    public Player_Stats stats { get; private set; }
 
     #region State Variables
     public Player_IdleState idleState { get; private set; }
@@ -28,8 +29,9 @@ public class Player : Entity
     public Player_DeadState deadState { get; private set; }
     public Player_CounterAttackState counterAttackState { get; private set; }
     public Player_SwordThrowState swordThrowState { get; private set; }
+    public Player_DomainExpansionState domainExpansionState { get; private set; }
 
-#endregion
+    #endregion
 
     [Header("Attack Details")]
     public Vector2[] attackVelocity;
@@ -68,8 +70,11 @@ public class Player : Entity
         health = GetComponent<Entity_Health>();
         statusHandler = GetComponent<Entity_StatusHandler>();
         combat = GetComponent<Player_Combat>();
+        inventory = GetComponent<Inventory_Player>();
+        stats = GetComponent<Player_Stats>();
 
         input = new PlayerInputSet();
+        ui.SetupControlsUI(input);
 
         idleState = new Player_IdleState(this, stateMachine, "Idle");
         moveState = new Player_MoveState(this, stateMachine, "Move");
@@ -202,9 +207,9 @@ public class Player : Entity
         input.Player.Spell.performed += ctx => skillManager.timeEcho.TryUseSkill();
         
         input.Player.Interact.performed += ctx => TryInteract();
-        
-        input.Player.ToggleSkillTreeUI.performed += ctx => ui.ToggleSkillTreeUI();
-        input.Player.ToggleInventoryUI.performed += ctx => ui.ToggleInventoryUI();
+
+        input.Player.QuickItmeSlot_1.performed += ctx => inventory.TryUseQuickItmeInSlot(1);
+        input.Player.QuickItmeSlot_2.performed += ctx => inventory.TryUseQuickItmeInSlot(2);
 
     }
 
