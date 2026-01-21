@@ -1,9 +1,12 @@
 using NUnit.Framework.Internal.Filters;
+using UnityEditor;
 using UnityEngine;
 
 [CreateAssetMenu(menuName = "RPG Setup/Item Data/Material Item", fileName = "Material data - ")]
 public class ItemDataSO : ScriptableObject
 {
+    public string saveID { get; private set; }
+
     [Header("Merchant details")]
     [Range(0, 10000)]
     public int itemPrice = 100;
@@ -34,6 +37,11 @@ public class ItemDataSO : ScriptableObject
     private void OnValidate()
     {
         dropChance = GetDropChance();
+
+#if UNITY_EDITOR
+        string path = AssetDatabase.GetAssetPath(this);
+        saveID = AssetDatabase.AssetPathToGUID(path);
+#endif
     }
     public float GetDropChance()
     {
