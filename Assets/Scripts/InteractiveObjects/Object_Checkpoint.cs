@@ -2,45 +2,57 @@ using UnityEngine;
 
 public class Object_Checkpoint : MonoBehaviour, ISaveable
 {
-    private Object_Checkpoint[] allCheckpoints;
+    [SerializeField] private string checkPointId;
+    [SerializeField] private Transform respawnPoint;
+
+    public bool isActive { get; private set; }
     private Animator anim;
 
     private void Awake()
     {
 
         anim = GetComponentInChildren<Animator>();
-        allCheckpoints = FindObjectsByType<Object_Checkpoint>(FindObjectsSortMode.None);
+
     }
 
+    public string GetCheckpointId() => checkPointId;
 
+    public Vector3 GetPosition() => respawnPoint == null ? transform.position : respawnPoint.position;
+
+    private void OnValidate()
+    {
+#if UNITY_EDITOR
+        if (string.IsNullOrEmpty(checkPointId))
+        {
+            checkPointId = System.Guid.NewGuid().ToString();
+        }
+#endif
+    }
 
     public void ActivateCheckpoint(bool activate)
     {
+        isActive = activate;
         anim.SetBool("IsActive", activate);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        foreach (var points in allCheckpoints)
-        {
-            points.ActivateCheckpoint(false);
-        }
 
-        SaveManager.instance.GetGameData().savedCheckpoint = (Vector2)transform.position;
         ActivateCheckpoint(true);
     }
 
     public void LoadData(GameData data)
     {
-        bool active = data.savedCheckpoint == transform.position;
+        bool active = data.unlockedCheckpoints.TryGetValue(checkPointId, out active);
         ActivateCheckpoint(active);
-
-        if (active)
-            Player.instance.TeleportPlayer(transform.position);
     }
 
     public void SaveData(ref GameData data)
     {
+        if (isActive == false)
+            return;
 
+        if(data.unlockedCheckpoints.ContainsKey(checkPointId) == false)
+            data.unlockedCheckpoints.Add(checkPointId, true);
     }
 }
