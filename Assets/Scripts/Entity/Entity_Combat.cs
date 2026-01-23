@@ -5,6 +5,7 @@ public class Entity_Combat : MonoBehaviour
 {
     public event Action<float> OnDoingPhysicalDamage;
 
+    private Entity_SFX sfx;
     private Entity_VFX vfx;
     private Entity_Stats stats;
 
@@ -19,9 +20,12 @@ public class Entity_Combat : MonoBehaviour
     {
         vfx = GetComponent<Entity_VFX>();
         stats = GetComponent<Entity_Stats>();
+        sfx = GetComponent<Entity_SFX>();
     }
     public void PerformAttack()
     {
+        bool targetGotHit = false;
+
         foreach (var target in GetDetectedColliders())
         {
             IDamagable damagable = target.GetComponent<IDamagable>();
@@ -36,7 +40,7 @@ public class Entity_Combat : MonoBehaviour
             float elementalDamage = attackData.elementalDamage;
             ElementType element = attackData.element;
 
-            bool targetGotHit = damagable.TakeDamage(physicalDamage, elementalDamage, element, transform);
+            targetGotHit = damagable.TakeDamage(physicalDamage, elementalDamage, element, transform);
 
             if (element != ElementType.None)
                 statusHandler?.ApplyStatusEffect(element, attackData.effectData);
@@ -45,10 +49,11 @@ public class Entity_Combat : MonoBehaviour
             {
                 OnDoingPhysicalDamage?.Invoke(physicalDamage);
                 vfx.CreateOnHitVFX(target.transform, attackData.isCrit, element);
-            }
-            
-            
+                sfx?.PlayAttackHit();
+            } 
         }
+        if (targetGotHit == false)
+            sfx?.PlayAttackMiss();
     }
 
 
