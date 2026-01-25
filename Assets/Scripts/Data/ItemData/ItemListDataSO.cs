@@ -13,7 +13,7 @@ public class ItemListDataSO : ScriptableObject
     }
 
 #if UNITY_EDITOR
-    [ContextMenu("Auto-fill wiht all ItemDataSO")]
+    [ContextMenu("Auto-fill with all ItemDataSO")]
     public void CollectItemsData()
     {
         string[] guids = AssetDatabase.FindAssets("t:ItemDataSO");
