@@ -19,19 +19,19 @@ public class Player_QuestManager : MonoBehaviour, ISaveable
         inventory = GetComponent<Inventory_Player>();
     }
 
-    public void TryGiveRewardFrom(RewardType npcType)
+    public void TryGetRewardFrom(RewardType npcType)
     {
         List<QuestData> getRewardQuests = new List<QuestData>();
 
         foreach (var quest in activeQuests)
         {
             // Deliver item if can first
-            if(quest.questDataSO.questType == QuestType.Delivery)
+            if (quest.questDataSO.questType == QuestType.Delivery)
             {
                 var requiredItem = quest.questDataSO.itemToDeliver;
                 var requiredAmount = quest.questDataSO.requiredAmount;
 
-                if(inventory.HasItemAmount(requiredItem, requiredAmount))
+                if (inventory.HasItemAmount(requiredItem, requiredAmount))
                 {
                     inventory.RemoveItemAmount(requiredItem, requiredAmount);
                     quest.AddQuestProgress(requiredAmount);
@@ -62,16 +62,37 @@ public class Player_QuestManager : MonoBehaviour, ISaveable
         }
     }
 
+    public bool HasCompletedQuest()
+    {
+        for (int i = 0; i < activeQuests.Count; i++)
+        {
+            QuestData quest = activeQuests[i];
+
+            if (quest.questDataSO.questType == QuestType.Delivery)
+            {
+                var requiredItem = quest.questDataSO.itemToDeliver;
+                var requiredAmount = quest.questDataSO.requiredAmount;
+
+                if (inventory.HasItemAmount(requiredItem, requiredAmount))
+                    return true;
+            }
+
+            if (quest.CanGetReward())
+                return true;
+        }
+        return false;
+    }
+
     public void AddProgress(string questTargetId, int amount = 1)
     {
         List<QuestData> getRewardQuests = new List<QuestData>();
 
         foreach (var quest in activeQuests)
         {
-            if (quest.questDataSO.questTargetId != questTargetId) 
+            if (quest.questDataSO.questTargetId != questTargetId)
                 continue;
 
-            if(quest.CanGetReward() == false)
+            if (quest.CanGetReward() == false)
                 quest.AddQuestProgress(amount);
 
             if (quest.questDataSO.rewardType == RewardType.None && quest.CanGetReward())
@@ -122,7 +143,7 @@ public class Player_QuestManager : MonoBehaviour, ISaveable
 
             QuestDataSO questDataSO = questDatabase.GetQuestById(questSaveId);
 
-            if(questDataSO == null)
+            if (questDataSO == null)
             {
                 Debug.Log(questSaveId + " was not found in the database!");
                 continue;
