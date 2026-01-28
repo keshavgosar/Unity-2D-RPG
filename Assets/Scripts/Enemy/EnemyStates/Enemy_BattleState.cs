@@ -6,7 +6,7 @@ public class Enemy_BattleState : EnemyState
     protected Transform player;
     protected Transform lastTarget;
     protected float lastTImeWasInBattle;
-    protected float lastTimeAttacked;
+    protected float lastTimeAttacked = float.NegativeInfinity;
     public Enemy_BattleState(Enemy enemy, StateMachine stateMachine, string animBoolName) : base(enemy, stateMachine, animBoolName)
     {
     }
@@ -24,9 +24,17 @@ public class Enemy_BattleState : EnemyState
 
         if (ShouldRetreat())
         {
-            rb.linearVelocity = new Vector2((enemy.retreatVelocity.x * enemy.activeSlowMultiplier) * -DirectionToPlayer(), enemy.retreatVelocity.y);
-            enemy.HandleFlip(DirectionToPlayer());
+            ShortRetreat();
         }
+    }
+
+    protected void ShortRetreat()
+    {
+        float x = (enemy.retreatVelocity.x * enemy.activeSlowMultiplier) * -DirectionToPlayer();
+        float y = enemy.retreatVelocity.y;
+
+        rb.linearVelocity = new Vector2(x, y);
+        enemy.HandleFlip(DirectionToPlayer());
     }
 
     public override void Update()
@@ -50,7 +58,7 @@ public class Enemy_BattleState : EnemyState
         }
         else
         {
-            float xVelocity = enemy.canChasePlayer ? enemy.GetBattleMoveSpeed()  : 0.0001f;
+            float xVelocity = enemy.canChasePlayer ? enemy.GetBattleMoveSpeed() : 0.0001f;
             enemy.SetVelocity(xVelocity * DirectionToPlayer(), rb.linearVelocity.y);
         }
     }
@@ -64,7 +72,7 @@ public class Enemy_BattleState : EnemyState
 
         Transform newTarget = enemy.IsPlayerDetected().transform;
 
-        if(newTarget != lastTarget)
+        if (newTarget != lastTarget)
         {
             lastTarget = newTarget;
             player = newTarget;
@@ -89,7 +97,8 @@ public class Enemy_BattleState : EnemyState
 
     protected int DirectionToPlayer()
     {
-        if (player == null) return 0;
+        if (player == null) 
+            return 0;
 
         return player.position.x > enemy.transform.position.x ? 1 : -1;
     }

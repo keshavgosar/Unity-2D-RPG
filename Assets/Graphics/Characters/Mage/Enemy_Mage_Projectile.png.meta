@@ -55,7 +55,7 @@ TextureImporter:
   maxTextureSize: 2048
   textureSettings:
     serializedVersion: 2
-    filterMode: 1
+    filterMode: 0
     aniso: 1
     mipBias: 0
     wrapU: 1
@@ -69,7 +69,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 32
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -93,7 +93,7 @@ TextureImporter:
     maxTextureSize: 2048
     resizeAlgorithm: 0
     textureFormat: -1
-    textureCompression: 1
+    textureCompression: 0
     compressionQuality: 50
     crunchedCompression: 0
     allowsAlphaSplitting: 0
@@ -118,155 +118,155 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: explosioneffect_0
+      name: Enemy_Mage_Projectile_0
       rect:
         serializedVersion: 2
-        x: 47
-        y: 815
-        width: 34
-        height: 34
+        x: 0
+        y: 768
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 8f18794e203a06750800000000000000
-      internalID: 6296211511884349944
+      spriteID: 337624f7b5e67c047903a979d2c97b5c
+      internalID: 1614988642
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: explosioneffect_1
+      name: Enemy_Mage_Projectile_1
       rect:
         serializedVersion: 2
-        x: 45
-        y: 685
-        width: 38
-        height: 38
+        x: 0
+        y: 640
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 82aa831a6b99e5f90800000000000000
-      internalID: -6962958964200265176
+      spriteID: 44c9fb3e4943ece409e34fa4f67d5c86
+      internalID: -720558753
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: explosioneffect_2
+      name: Enemy_Mage_Projectile_2
       rect:
         serializedVersion: 2
-        x: 45
-        y: 557
-        width: 38
-        height: 38
+        x: 0
+        y: 512
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 1d79d8ea6ee70b920800000000000000
-      internalID: 3004040480692213713
+      spriteID: 962031ee92dd1274eaf29869ffba8061
+      internalID: -2013239291
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: explosioneffect_3
+      name: Enemy_Mage_Projectile_3
       rect:
         serializedVersion: 2
-        x: 45
-        y: 429
-        width: 34
-        height: 36
+        x: 0
+        y: 384
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 791213e1dd75d0500800000000000000
-      internalID: 364043752092803479
+      spriteID: 55a1f646e552f1847ae34c33547ecf5b
+      internalID: -1881909935
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: explosioneffect_4
+      name: Enemy_Mage_Projectile_4
       rect:
         serializedVersion: 2
-        x: 45
-        y: 309
-        width: 34
-        height: 28
+        x: 0
+        y: 256
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: f714e8e4ea71e0be0800000000000000
-      internalID: -1509242787712843393
+      spriteID: 01d7476db8c33294ea7513c84e03286c
+      internalID: -330362983
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: explosioneffect_5
+      name: Enemy_Mage_Projectile_5
       rect:
         serializedVersion: 2
-        x: 57
-        y: 299
-        width: 6
-        height: 6
+        x: 0
+        y: 128
+        width: 128
+        height: 128
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: 3f86cbb8349451220800000000000000
-      internalID: 2455949726256490739
+      spriteID: 11f78447483d9334a8855d0652141057
+      internalID: 333892710
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: explosioneffect_6
+      name: Enemy_Mage_Projectile_6
       rect:
         serializedVersion: 2
-        x: 47
-        y: 185
-        width: 30
-        height: 24
+        x: 12
+        y: 17
+        width: 101
+        height: 95
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: ea9bdf0003e82ff70800000000000000
-      internalID: 9219587724007029166
+      spriteID: baaa79432cf31044796259179f2929bc
+      internalID: 737799551
       vertices: []
       indices: 
       edges: []
@@ -275,7 +275,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 2186c569dc0077448873fc495c695d88
     internalID: 0
     vertices: []
     indices: 
@@ -285,13 +285,13 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      explosioneffect_0: 6296211511884349944
-      explosioneffect_1: -6962958964200265176
-      explosioneffect_2: 3004040480692213713
-      explosioneffect_3: 364043752092803479
-      explosioneffect_4: -1509242787712843393
-      explosioneffect_5: 2455949726256490739
-      explosioneffect_6: 9219587724007029166
+      Enemy_Mage_Projectile_0: 1614988642
+      Enemy_Mage_Projectile_1: -720558753
+      Enemy_Mage_Projectile_2: -2013239291
+      Enemy_Mage_Projectile_3: -1881909935
+      Enemy_Mage_Projectile_4: -330362983
+      Enemy_Mage_Projectile_5: 333892710
+      Enemy_Mage_Projectile_6: 737799551
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: ArcherElfAttack
+  m_Name: MageAttack
   serializedVersion: 7
   m_Legacy: 0
   m_Compressed: 0
@@ -21,19 +21,21 @@ AnimationClip:
   - serializedVersion: 2
     curve:
     - time: 0
-      value: {fileID: 281649885, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
+      value: {fileID: -515268622, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
     - time: 0.125
-      value: {fileID: -1128973203, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
+      value: {fileID: -573377438, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
     - time: 0.25
-      value: {fileID: -398988656, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
+      value: {fileID: -1106801027, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
     - time: 0.375
-      value: {fileID: -182075878, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
+      value: {fileID: -689786056, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
     - time: 0.5
-      value: {fileID: -994376690, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
+      value: {fileID: -16424554, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
     - time: 0.625
-      value: {fileID: -839889269, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
+      value: {fileID: -1713441199, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
     - time: 0.75
-      value: {fileID: 584642043, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
+      value: {fileID: 2010946416, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
+    - time: 0.875
+      value: {fileID: 843664198, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
     attribute: m_Sprite
     path: 
     classID: 212
@@ -56,19 +58,20 @@ AnimationClip:
       isIntCurve: 0
       isSerializeReferenceCurve: 0
     pptrCurveMapping:
-    - {fileID: 281649885, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
-    - {fileID: -1128973203, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
-    - {fileID: -398988656, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
-    - {fileID: -182075878, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
-    - {fileID: -994376690, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
-    - {fileID: -839889269, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
-    - {fileID: 584642043, guid: e81ec5c68df311c47b3e330aacbef356, type: 3}
+    - {fileID: -515268622, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
+    - {fileID: -573377438, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
+    - {fileID: -1106801027, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
+    - {fileID: -689786056, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
+    - {fileID: -16424554, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
+    - {fileID: -1713441199, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
+    - {fileID: 2010946416, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
+    - {fileID: 843664198, guid: 8287871d3427b8b4ca32343f4b13f2d7, type: 3}
   m_AnimationClipSettings:
     serializedVersion: 2
     m_AdditiveReferencePoseClip: {fileID: 0}
     m_AdditiveReferencePoseTime: 0
     m_StartTime: 0
-    m_StopTime: 0.875
+    m_StopTime: 1
     m_OrientationOffsetY: 0
     m_Level: 0
     m_CycleOffset: 0
@@ -88,14 +91,28 @@ AnimationClip:
   m_HasGenericRootTransform: 0
   m_HasMotionFloatCurves: 0
   m_Events:
-  - time: 0.375
-    functionName: SpecialAttackTrigger
+  - time: 0.25
+    functionName: EnableCounterWindow
     data: 
     objectReferenceParameter: {fileID: 0}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0
-  - time: 0.75
+  - time: 0.5
+    functionName: AttackTrigger
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.5
+    functionName: DisableCounterWindow
+    data: 
+    objectReferenceParameter: {fileID: 0}
+    floatParameter: 0
+    intParameter: 0
+    messageOptions: 0
+  - time: 0.875
     functionName: CurrentStateTrigger
     data: 
     objectReferenceParameter: {fileID: 0}

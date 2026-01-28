@@ -7,6 +7,11 @@ public class Enemy_ArcherElf : Enemy, ICounterable
     public bool CanBeCountered { get => canBeStunned; }
     public Enemy_ArcherElfBattleState elfBattleState { get;  set; }
 
+    [Header("Archer Elf Specific")]
+    [SerializeField] private GameObject arrowPrefab;
+    [SerializeField] private Transform arrowStartPoint;
+    [SerializeField] private float arrowSpeed = 8;
+
     protected override void Awake()
     {
         base.Awake();
@@ -26,6 +31,14 @@ public class Enemy_ArcherElf : Enemy, ICounterable
         base.Start();
 
         stateMachine.Initialize(idleState);
+    }
+
+    public override void SpecialAttack()
+    {
+        base.SpecialAttack();
+
+        GameObject arrow = Instantiate(arrowPrefab, transform.position, Quaternion.identity);
+        arrow.GetComponent<Enemy_ArcherElfArrow>().SetupArrow(arrowSpeed * facingDir, combat);
     }
 
     public void HandleCounter()
