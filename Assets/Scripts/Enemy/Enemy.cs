@@ -58,6 +58,14 @@ public class Enemy : Entity
         vfx = GetComponent<Entity_VFX>();
     }
 
+    public void MakeUntargetable(bool canBeTargeted)
+    {
+        if (canBeTargeted)
+            gameObject.layer = LayerMask.NameToLayer("Untargetable");
+        else
+            gameObject.layer = LayerMask.NameToLayer("Enemy");
+    }
+
     public virtual void SpecialAttack()
     {
 

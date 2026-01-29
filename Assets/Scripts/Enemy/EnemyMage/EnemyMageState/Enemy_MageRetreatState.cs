@@ -26,7 +26,7 @@ public class Enemy_MageRetreatState : EnemyState
 
         rb.linearVelocity = new Vector2(enemyMage.retreatSpeed * -DirectionToPlayer(), 0);
         enemy.HandleFlip(DirectionToPlayer());
-        enemy.gameObject.layer = LayerMask.NameToLayer("Untargetable");
+        enemy.MakeUntargetable(true);
         enemy.vfx.DoImageEchoEffect(1f);
     }
 
@@ -47,7 +47,7 @@ public class Enemy_MageRetreatState : EnemyState
     {
         base.Exit();
         enemy.vfx.StopImageEchoEffect();
-        enemy.gameObject.layer = LayerMask.NameToLayer("Enemy");
+        enemy.MakeUntargetable(false);
     }
 
     protected int DirectionToPlayer()

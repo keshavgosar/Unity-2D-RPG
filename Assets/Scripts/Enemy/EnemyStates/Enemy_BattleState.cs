@@ -54,6 +54,7 @@ public class Enemy_BattleState : EnemyState
 
         if (WithinAttackRange() && enemy.IsPlayerDetected() && CanAttack())
         {
+            lastTimeAttacked = Time.time;
             stateMachine.ChangeState(enemy.attackState);
         }
         else
