@@ -46,6 +46,8 @@ public class Enemy : Entity
     public Transform player { get; private set; }
     public float activeSlowMultiplier { get; private set; } = 1;
 
+    public bool isImuneToSpikes = false;
+
     public float GetMoveSpeed() => moveSpeed * activeSlowMultiplier;
     public float GetBattleMoveSpeed() => battleMoveSpeed * activeSlowMultiplier;
 

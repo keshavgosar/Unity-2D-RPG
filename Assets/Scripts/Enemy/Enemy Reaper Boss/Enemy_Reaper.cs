@@ -46,6 +46,8 @@ public class Enemy_Reaper : Enemy, ICounterable
 
         battleState = reaperBattleState;
 
+        isImuneToSpikes = true;
+
     }
 
     protected override void Start()
