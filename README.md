@@ -248,7 +248,7 @@ Each system is implemented independently but communicates through well-defined i
 ## Download
 
 You can download and play the packaged version from Itch.io:
-https://keshav567.itch.io/nightfall-chronicalls
+https://keshav567.itch.io/nightfall-chronicles
 
 ---
 
