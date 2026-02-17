@@ -245,4 +245,11 @@ Each system is implemented independently but communicates through well-defined i
 
 ---
 
-Thank you for taking the time to review this project. Feedback is always welcome!
+## Download
+
+You can download and play the packaged version from Itch.io:
+https://keshav567.itch.io/nightfall-chronicalls
+
+---
+
+Thank you for taking the time to review this project.
